@@ -1,0 +1,195 @@
+/* Reset some defaults for consistency */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 1.1rem;
+    background: linear-gradient(120deg, #e3f0ff 0%, #f9f9f9 100%);
+    color: #222;
+    min-height: 100vh;
+    padding: 2em 0;
+}
+
+/* Soft complementary accent color for form background */
+form {
+    background: #f7faff;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0,87,184,0.08), 0 1.5px 4px rgba(0,0,0,0.04);
+    max-width: 500px;
+    margin: 2em auto;
+    padding: 2em 2em 1em 2em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+label {
+    font-weight: 600;
+    margin-top: 0.5em;
+    display: block;
+    color: #007f6b; /* teal accent for contrast */
+    letter-spacing: 0.01em;
+    font-size: 1.05rem;
+}
+
+input, select {
+    font-size: 1rem;
+    padding: 0.6em;
+    margin-bottom: 0.2em;
+    border: 1.5px solid #b2d7e7;
+    border-radius: 6px;
+    width: 100%;
+    background: #eaf7fa;
+    transition: border-color 0.2s;
+}
+
+input:focus, select:focus {
+    border-color: #007f6b;
+    outline: none;
+    background: #d7f3ee;
+}
+
+.error {
+    color: #d7263d; /* deep red for errors */
+    font-size: 0.98rem;
+    display: block;
+    margin-bottom: 0.5em;
+    font-weight: 500;
+}
+
+#formFeedback {
+    color: #d7263d;
+    font-size: 1.08rem;
+    margin: 0 auto 1em auto;
+    background: #fff3f3;
+    padding: 0.7em 1.2em;
+    border-radius: 6px;
+    border: 1.5px solid #d7263d;
+    max-width: 500px;
+    box-shadow: 0 2px 8px rgba(215,38,61,0.04);
+    text-align: center;
+}
+
+button[type="submit"], #removeProfileBtn {
+    background: linear-gradient(90deg, #007f6b 60%, #00b8a9 100%);
+    color: #fff;
+    font-size: 1.08rem;
+    padding: 0.7em 1.5em;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 1em;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0,127,107,0.08);
+    transition: background 0.2s, transform 0.2s;
+}
+
+button[type="submit"]:hover, #removeProfileBtn:hover {
+    background: linear-gradient(90deg, #005f4b 60%, #007f6b 100%);
+    transform: translateY(-2px) scale(1.03);
+}
+
+#profileCard {
+    display: flex;
+    justify-content: center;
+    margin-top: 2em;
+}
+
+#profileCardContent {
+    border: 2px solid #007f6b;
+    background: #f7faff;
+    padding: 20px 24px;
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+    border-radius: 12px;
+    max-width: 600px;
+    box-shadow: 0 4px 24px rgba(0,127,107,0.08), 0 1.5px 4px rgba(0,0,0,0.04);
+    gap: 1.5em;
+}
+
+#profileCardContent img {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 0;
+    border: 2px solid #007f6b;
+    box-shadow: 0 2px 8px rgba(0,127,107,0.08);
+}
+
+#profileCardContent h3 {
+    margin: 0 0 0.5em 0;
+    color: #007f6b;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+#profileCardContent p {
+    margin: 0.2em 0;
+    font-size: 1.05rem;
+    color: #333;
+}
+
+table {
+    margin: 2em auto 0 auto;
+    width: 95%;
+    border-collapse: collapse;
+    font-size: 1rem;
+    background: #f7faff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,127,107,0.08), 0 1.5px 4px rgba(0,0,0,0.04);
+}
+
+th, td {
+    border: 1px solid #eaf7fa;
+    padding: 0.8em 0.6em;
+    text-align: left;
+}
+
+th {
+    background: linear-gradient(90deg, #007f6b 60%, #00b8a9 100%);
+    color: #fff;
+    font-size: 1.07rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+td {
+    background: #eaf7fa;
+    color: #222;
+}
+
+td img {
+    width: 44px;
+    height: 44px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 1.5px solid #007f6b;
+    box-shadow: 0 2px 8px rgba(0,127,107,0.08);
+}
+
+@media (max-width: 700px) {
+    form, #formFeedback, #profileCardContent, table {
+        max-width: 98vw;
+        font-size: 1rem;
+        padding: 1em;
+    }
+    #profileCardContent {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1em;
+    }
+    #profileCardContent img {
+        margin-bottom: 1em;
+        margin-right: 0;
+    }
+    table {
+        font-size: 0.9rem;
+    }
+}

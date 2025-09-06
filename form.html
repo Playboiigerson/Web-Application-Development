@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+     <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <!-- Add aria-live region for feedback -->
+    <div id="formFeedback" aria-live="polite"></div>
+
+    <form id="regForm" novalidate>
+        <label for="firstName">First Name <span aria-hidden="true">*</span></label>
+        <input type="text" id="firstName" name="firstName" required />
+        <small class="error" id="err-firstName"></small>
+
+        <label for="lastName">Last Name <span aria-hidden="true">*</span></label>
+        <input type="text" id="lastName" name="lastName" required />
+        <small class="error" id="err-lastName"></small>
+
+        <label for="email">Email <span aria-hidden="true">*</span></label>
+        <input type="email" id="email" name="email" required />
+        <small class="error" id="err-email"></small>
+
+        <label for="programme">Programme <span aria-hidden="true">*</span></label>
+        <input type="text" id="programme" name="programme" required />
+        <small class="error" id="err-programme"></small>
+
+        <label for="year">Year <span aria-hidden="true">*</span></label>
+        <select id="year" name="year" required>
+            <option value="">Select Year</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+        </select>
+        <small class="error" id="err-year"></small>
+
+        <label for="interests">Interests</label>
+        <input type="text" id="interests" name="interests" />
+        <small class="error" id="err-interests"></small>
+
+        <label for="photoUrl">Photo URL</label>
+        <input type="url" id="photoUrl" name="photoUrl" />
+        <small style="color:#888;display:block;margin-bottom:0.5em;">
+          For Google Drive images, use: <br>
+          <span style="font-size:0.95em;">https://drive.google.com/uc?export=view&id=FILE_ID</span>
+        </small>
+        <small class="error" id="err-photoUrl"></small>
+
+        <label for="photoFile">Photo</label>
+<input type="file" id="photoFile" name="photoFile" accept="image/*" />
+<small class="error" id="err-photoFile"></small>
+
+        <button type="submit">Register</button>
+    </form>
+
+    <div id="profileCard"></div>
+
+    <input type="text" id="searchInput" placeholder="Search profiles..." style="display:block; margin:2em auto 1em auto; max-width:500px; width:90%; padding:0.7em; border-radius:6px; border:1.5px solid #b2d7e7; background:#eaf7fa; font-size:1rem;">
+
+    <table id="summaryTable">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Programme</th>
+                <th>Year</th>
+                <th>Interests</th>
+                <th>Photo</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+<script>
+let profiles = [];
+let editingId = null;
+let photoDataUrl = ""; // Store the image data URL
+
+// Restore profiles from LocalStorage
+function loadProfiles() {
+    const stored = localStorage.getItem('profiles');
+    profiles = stored ? JSON.parse(stored) : [];
+    renderProfiles();
+}
+function saveProfiles() {
+    localStorage.setItem('profiles', JSON.stringify(profiles));
+}
+
+// Render all profiles (table and card)
+function renderProfiles(filter = '') {
+    const tbody = document.getElementById('summaryTable').querySelector('tbody');
+    tbody.innerHTML = '';
+    document.getElementById('profileCard').innerHTML = '';
+
+    let filtered = profiles;
+    if (filter) {
+        const f = filter.toLowerCase();
+        filtered = profiles.filter(p =>
+            p.firstName.toLowerCase().includes(f) ||
+            p.lastName.toLowerCase().includes(f) ||
+            p.email.toLowerCase().includes(f) ||
+            p.programme.toLowerCase().includes(f)
+        );
+    }
+
+    filtered.forEach(profile => {
+        // Determine which photo to use: file upload (dataUrl) or URL
+        let photoSrc = profile.photoDataUrl || profile.photoUrl;
+        // Table row
+        const row = document.createElement('tr');
+        row.id = profile.id;
+        row.innerHTML = `
+            <td>${profile.firstName}</td>
+            <td>${profile.lastName}</td>
+            <td>${profile.email}</td>
+            <td>${profile.programme}</td>
+            <td>${profile.year}</td>
+            <td>${profile.interests}</td>
+            <td>${photoSrc ? `<img src="${photoSrc}" alt="Photo" onerror="this.style.display='none';">` : ''}</td>
+            <td>
+                <button class="editBtn" data-id="${profile.id}">Edit</button>
+                <button class="removeBtn" data-id="${profile.id}">Remove</button>
+            </td>
+        `;
+        tbody.appendChild(row);
+
+        // Card (show only if not searching)
+        if (!filter) {
+            const cardHtml = `
+                <div id="profileCardContent">
+                    ${photoSrc ? `<img src="${photoSrc}" alt="Photo" onerror="this.style.display='none';">` : ''}
+                    <div>
+                        <h3>${profile.firstName} ${profile.lastName}</h3>
+                        <p><strong>Email:</strong> ${profile.email}</p>
+                        <p><strong>Programme:</strong> ${profile.programme}</p>
+                        <p><strong>Year:</strong> ${profile.year}</p>
+                        ${profile.interests ? `<p><strong>Interests:</strong> ${profile.interests}</p>` : ''}
+                        <button class="editBtn" data-id="${profile.id}" style="margin-right:10px;">Edit</button>
+                        <button class="removeBtn" data-id="${profile.id}">Remove</button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('profileCard').innerHTML += cardHtml;
+        }
+    });
+
+    // Attach event listeners for Edit/Remove
+    document.querySelectorAll('.editBtn').forEach(btn => {
+        btn.onclick = function() {
+            const id = this.getAttribute('data-id');
+            const profile = profiles.find(p => p.id === id);
+            if (profile) {
+                editingId = id;
+                document.getElementById('firstName').value = profile.firstName;
+                document.getElementById('lastName').value = profile.lastName;
+                document.getElementById('email').value = profile.email;
+                document.getElementById('programme').value = profile.programme;
+                document.getElementById('year').value = profile.year;
+                document.getElementById('interests').value = profile.interests;
+                document.getElementById('photoUrl').value = profile.photoUrl || "";
+                showPhotoPreview(profile.photoDataUrl || profile.photoUrl || "");
+                photoDataUrl = ""; // Reset, so new upload will override
+                document.getElementById('formFeedback').textContent = 'Editing profile...';
+            }
+        };
+    });
+    document.querySelectorAll('.removeBtn').forEach(btn => {
+        btn.onclick = function() {
+            const id = this.getAttribute('data-id');
+            profiles = profiles.filter(p => p.id !== id);
+            saveProfiles();
+            renderProfiles(document.getElementById('searchInput').value);
+            document.getElementById('formFeedback').textContent = 'Profile removed.';
+            showPhotoPreview(""); // Remove preview
+        };
+    });
+}
+
+function showPhotoPreview(dataUrl) {
+    let preview = document.getElementById('photoPreview');
+    if (!preview) {
+        preview = document.createElement('img');
+        preview.id = 'photoPreview';
+        preview.style = 'display:block;max-width:120px;margin:0.5em 0;border-radius:8px;';
+        document.getElementById('photoFile').insertAdjacentElement('afterend', preview);
+    }
+    preview.src = dataUrl || '';
+    preview.style.display = dataUrl ? 'block' : 'none';
+}
+
+// Handle file input change
+document.getElementById('photoFile').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+            photoDataUrl = evt.target.result;
+            showPhotoPreview(photoDataUrl);
+        };
+        reader.readAsDataURL(file);
+    } else {
+        photoDataUrl = "";
+        showPhotoPreview("");
+    }
+});
+
+// Form submit
+document.getElementById('regForm').addEventListener('submit', function(e) {
+    let valid = true;
+    let feedbackMessages = [];
+
+    document.querySelectorAll('.error').forEach(el => el.textContent = '');
+    document.getElementById('formFeedback').textContent = '';
+
+    const firstName = document.getElementById('firstName').value.trim();
+    if (!firstName) {
+        document.getElementById('err-firstName').textContent = 'First name is required.';
+        feedbackMessages.push('First name is required.');
+        valid = false;
+    }
+    const lastName = document.getElementById('lastName').value.trim();
+    if (!lastName) {
+        document.getElementById('err-lastName').textContent = 'Last name is required.';
+        feedbackMessages.push('Last name is required.');
+        valid = false;
+    }
+    const email = document.getElementById('email').value.trim();
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email) {
+        document.getElementById('err-email').textContent = 'Email is required.';
+        feedbackMessages.push('Email is required.');
+        valid = false;
+    } else if (!emailPattern.test(email)) {
+        document.getElementById('err-email').textContent = 'Invalid email format.';
+        feedbackMessages.push('Invalid email format.');
+        valid = false;
+    }
+    const programme = document.getElementById('programme').value.trim();
+    if (!programme) {
+        document.getElementById('err-programme').textContent = 'Programme is required.';
+        feedbackMessages.push('Programme is required.');
+        valid = false;
+    }
+    const year = document.getElementById('year').value;
+    if (!year) {
+        document.getElementById('err-year').textContent = 'Please select a year.';
+        feedbackMessages.push('Please select a year.');
+        valid = false;
+    }
+
+    if (!valid) {
+        e.preventDefault();
+        document.getElementById('formFeedback').textContent = feedbackMessages.join(' ');
+        return;
+    }
+
+    e.preventDefault();
+
+    const interests = document.getElementById('interests').value.trim();
+    const photoUrlInput = document.getElementById('photoUrl').value.trim();
+
+    if (editingId) {
+        // Update existing profile
+        const idx = profiles.findIndex(p => p.id === editingId);
+        if (idx !== -1) {
+            profiles[idx] = {
+                id: editingId,
+                firstName: document.getElementById('firstName').value.trim(),
+                lastName: document.getElementById('lastName').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                programme: document.getElementById('programme').value.trim(),
+                year: document.getElementById('year').value,
+                interests,
+                photoUrl: photoUrlInput,
+                photoDataUrl: photoDataUrl || profiles[idx].photoDataUrl // keep old photo if not changed
+            };
+            document.getElementById('formFeedback').textContent = 'Profile updated!';
+        }
+        editingId = null;
+    } else {
+        // Add new profile
+        const id = 'row-' + Date.now();
+        profiles.push({
+            id,
+            firstName: document.getElementById('firstName').value.trim(),
+            lastName: document.getElementById('lastName').value.trim(),
+            email: document.getElementById('email').value.trim(),
+            programme: document.getElementById('programme').value.trim(),
+            year: document.getElementById('year').value,
+            interests,
+            photoUrl: photoUrlInput,
+            photoDataUrl: photoDataUrl
+        });
+        document.getElementById('formFeedback').textContent = 'Registration successful!';
+    }
+    saveProfiles();
+    renderProfiles(document.getElementById('searchInput').value);
+    document.getElementById('regForm').reset();
+    photoDataUrl = ""; // Reset after submit
+    showPhotoPreview(""); // Remove preview after submit
+});
+
+// Search/filter
+document.getElementById('searchInput').addEventListener('input', function() {
+    renderProfiles(this.value);
+});
+
+// Initial load
+window.onload = function() {
+    // Ensure table has tbody
+    if (!document.getElementById('summaryTable').querySelector('tbody')) {
+        document.getElementById('summaryTable').innerHTML += '<tbody></tbody>';
+    }
+    loadProfiles();
+};
+</script>
+</body>
+</html>
