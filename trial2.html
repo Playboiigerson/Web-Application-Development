@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Tracker System - NUST</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css">
+
+   
+</head>
+<body>
+    <!-- Background Slideshow -->
+    <div class="slideshow-container">
+        <div class="slide slide-1"></div>
+        <div class="slide slide-2"></div>
+        <div class="slide slide-3"></div>
+        <div class="slide slide-4"></div>
+        <div class="slide slide-5"></div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-chart-pie"></i>
+                <h1>Budget Tracker</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="nav-link active" data-page="home">Home</a></li>
+                    <li><a href="#" class="nav-link" data-page="about">About</a></li>
+                    <li><a href="#" class="nav-link" data-page="contact">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons">
+                <button class="dark-mode-toggle" id="darkModeToggle" title="Toggle Dark Mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="btn btn-outline" id="loginBtn">Login</button>
+                <button class="btn btn-primary" id="registerBtn">Register</button>
+                <button class="logout-btn" id="logoutBtn">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Home Section -->
+    <section class="hero" id="home-section">
+        <div class="container">
+            <h2>Take Control of Your Finances</h2>
+            <p>A smart academic and financial planning tool designed specifically for NUST students to manage expenses, track income, and achieve savings goals.</p>
+            <button class="btn btn-primary" id="getStartedBtn">Get Started</button>
+        </div>
+    </section>
+
+    <!-- Login Section -->
+    <section class="login-section" id="loginSection">
+        <div class="container">
+            <h2>Student Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="studentId">Student ID</label>
+                    <input type="text" id="studentId" class="form-control" placeholder="Enter your student ID" required>
+                    <div class="validation-message" id="studentIdValidation"></div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="Enter your password" required>
+                    <div class="validation-message" id="passwordValidation"></div>
+                </div>
+                <div class="form-group">
+                    <a href="#" id="forgotPassword">Forgot Password?</a>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;" id="loginSubmitBtn">Login</button>
+            </form>
+            <p class="form-footer">Don't have an account? <a href="#" id="showRegister">Register here</a></p>
+        </div>
+    </section>
+
+    <!-- Register Section -->
+    <section class="register-section" id="registerSection">
+        <div class="container">
+            <h2>Create Student Account</h2>
+            <form id="registerForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" class="form-control" placeholder="Enter your first name" required>
+                        <div class="validation-message" id="firstNameValidation"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" class="form-control" placeholder="Enter your last name" required>
+                        <div class="validation-message" id="lastNameValidation"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="regStudentId">Student ID</label>
+                    <input type="text" id="regStudentId" class="form-control" placeholder="Enter your student ID" required>
+                    <div class="validation-message" id="regStudentIdValidation"></div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
+                    <div class="validation-message" id="emailValidation"></div>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" class="form-control" placeholder="Enter your phone number">
+                    <div class="validation-message" id="phoneValidation"></div>
+                </div>
+                <div class="form-group">
+                    <label for="regPassword">Password</label>
+                    <input type="password" id="regPassword" class="form-control" placeholder="Create a password" required>
+                    <div class="password-strength" id="passwordStrength">
+                        <div class="password-strength-bar"></div>
+                    </div>
+                    <div class="password-requirements">
+                        <div class="requirement" id="lengthReq">
+                            <i class="fas fa-circle"></i>
+                            <span>At least 8 characters</span>
+                        </div>
+                        <div class="requirement" id="uppercaseReq">
+                            <i class="fas fa-circle"></i>
+                            <span>At least one uppercase letter</span>
+                        </div>
+                        <div class="requirement" id="lowercaseReq">
+                            <i class="fas fa-circle"></i>
+                            <span>At least one lowercase letter</span>
+                        </div>
+                        <div class="requirement" id="numberReq">
+                            <i class="fas fa-circle"></i>
+                            <span>At least one number</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm your password" required>
+                    <div class="validation-message" id="confirmPasswordValidation"></div>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="terms" required>
+                        I agree to the <a href="#" id="privacyLink">Terms of Service</a> and <a href="#" id="privacyPolicyLink">Privacy Policy</a>
+                    </label>
+                    <div class="validation-message" id="termsValidation"></div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;" id="registerSubmitBtn">Create Account</button>
+            </form>
+            <p class="form-footer">Already have an account? <a href="#" id="showLogin">Login here</a></p>
+        </div>
+    </section>
+
+    <!-- Dashboard -->
+    <section class="dashboard" id="dashboard">
+        <div class="container">
+            <div class="dashboard-header">
+                <h2 class="dashboard-title">Student Dashboard</h2>
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">GS</div>
+                    <span id="userName">Gerson Shawapala</span>
+                </div>
+            </div>
+
+            <div class="stats-cards">
+                <div class="stat-card income">
+                    <div class="stat-icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="incomeAmount">N$ 0</h3>
+                        <p>Monthly Income</p>
+                    </div>
+                </div>
+                <div class="stat-card expenses">
+                    <div class="stat-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="expensesAmount">N$ 0</h3>
+                        <p>Monthly Expenses</p>
+                    </div>
+                </div>
+                <div class="stat-card savings">
+                    <div class="stat-icon">
+                        <i class="fas fa-piggy-bank"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="savingsAmount">N$ 0</h3>
+                        <p>Monthly Savings</p>
+                    </div>
+                </div>
+                <div class="stat-card balance">
+                    <div class="stat-icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="balanceAmount">N$ 0</h3>
+                        <p>Current Balance</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-content">
+                <div class="main-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Expense Analytics</h3>
+                            <select id="timeRange">
+                                <option value="this_month">This Month</option>
+                                <option value="last_month">Last Month</option>
+                                <option value="this_semester">This Semester</option>
+                            </select>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="expenseChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Recent Transactions</h3>
+                            <button class="btn btn-primary" id="viewAllTransactions">View All</button>
+                        </div>
+                        <ul class="transactions-list" id="transactionsList">
+                            <!-- Transactions will be dynamically added here -->
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="sidebar">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Budget Overview</h3>
+                            <button class="budget-settings" id="budgetSettingsBtn" title="Edit Budget">
+                                <i class="fas fa-cog"></i>
+                            </button>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="budgetChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Payment Reminders</h3>
+                            <button class="btn btn-primary" id="addReminderBtn">Add Reminder</button>
+                        </div>
+                        <ul class="reminders-list" id="remindersList">
+                            <!-- Reminders will be dynamically added here -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add Transaction Modal -->
+    <div class="modal-overlay" id="transactionModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="transactionModalTitle">Add New Transaction</h3>
+                <button class="close-modal" id="closeTransactionModal">&times;</button>
+            </div>
+            <form id="transactionForm">
+                <input type="hidden" id="editingTransactionId" value="">
+                <div class="transaction-type-toggle">
+                    <button type="button" class="type-btn income active" data-type="income">Income</button>
+                    <button type="button" class="type-btn expense" data-type="expense">Expense</button>
+                    <button type="button" class="type-btn savings" data-type="savings">Savings</button>
+                </div>
+                <div class="form-group">
+                    <label for="transactionTitle">Title</label>
+                    <input type="text" id="transactionTitle" class="form-control" placeholder="Enter transaction title" required>
+                </div>
+                <div class="form-group">
+                    <label for="transactionAmount">Amount (N$)</label>
+                    <input type="number" id="transactionAmount" class="form-control" placeholder="0.00" min="0.01" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="transactionCategory">Category</label>
+                    <select id="transactionCategory" class="form-control" required>
+                        <option value="">Select a category</option>
+                        <!-- Categories will be populated based on type -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="transactionDate">Date</label>
+                    <input type="date" id="transactionDate" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="transactionDescription">Description (Optional)</label>
+                    <textarea id="transactionDescription" class="form-control" placeholder="Add a description"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;" id="transactionSubmitBtn">Add Transaction</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Reminder Modal -->
+    <div class="modal-overlay" id="reminderModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Add Payment Reminder</h3>
+                <button class="close-modal" id="closeReminderModal">&times;</button>
+            </div>
+            <form id="reminderForm">
+                <div class="form-group">
+                    <label for="reminderTitle">Payment Title</label>
+                    <input type="text" id="reminderTitle" class="form-control" placeholder="e.g., Tuition Fees, Rent, Internet Bill" required>
+                </div>
+                <div class="form-group">
+                    <label for="reminderAmount">Amount (N$)</label>
+                    <input type="number" id="reminderAmount" class="form-control" placeholder="0.00" min="0.01" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="reminderCategory">Category</label>
+                    <select id="reminderCategory" class="form-control" required>
+                        <option value="">Select a category</option>
+                        <option value="tuition">Tuition Fees</option>
+                        <option value="rent">Rent</option>
+                        <option value="utilities">Utilities</option>
+                        <option value="subscription">Subscriptions</option>
+                        <option value="loan">Loan Payment</option>
+                        <option value="savings">Savings</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="reminderDate">Due Date</label>
+                    <input type="date" id="reminderDate" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="reminderNotes">Notes (Optional)</label>
+                    <textarea id="reminderNotes" class="form-control" placeholder="Add any additional notes"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="reminderRecurring">
+                        This is a recurring payment
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Add Reminder</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Budget Settings Modal -->
+    <div class="modal-overlay" id="budgetSettingsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Set Monthly Budget</h3>
+                <button class="close-modal" id="closeBudgetSettingsModal">&times;</button>
+            </div>
+            <form id="budgetSettingsForm">
+                <div class="form-group">
+                    <label for="rentBudget">Rent Budget (N$)</label>
+                    <input type="number" id="rentBudget" class="form-control" placeholder="Enter budget for rent" min="0" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="foodBudget">Food Budget (N$)</label>
+                    <input type="number" id="foodBudget" class="form-control" placeholder="Enter budget for food" min="0" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="transportBudget">Transport Budget (N$)</label>
+                    <input type="number" id="transportBudget" class="form-control" placeholder="Enter budget for transport" min="0" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="tuitionBudget">Tuition Budget (N$)</label>
+                    <input type="number" id="tuitionBudget" class="form-control" placeholder="Enter budget for tuition" min="0" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="savingsBudget">Savings Goal (N$)</label>
+                    <input type="number" id="savingsBudget" class="form-control" placeholder="Enter savings goal" min="0" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="otherBudget">Other Expenses Budget (N$)</label>
+                    <input type="number" id="otherBudget" class="form-control" placeholder="Enter budget for other expenses" min="0" step="0.01">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Save Budget</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div class="notification-container" id="notificationContainer"></div>
+
+    <!-- About Section -->
+    <section class="about-section" id="about-section">
+        <div class="container">
+            <div class="about-content">
+                <h2>About Budget Tracker</h2>
+                <p>The Budget Tracker is a web-based financial management system designed specifically for NUST students to help them manage their personal and academic-related finances in real time.</p>
+                
+                <h3>Our Mission</h3>
+                <p>To empower NUST students with financial literacy and practical tools to effectively manage their finances, reduce financial stress, and achieve their academic and personal goals.</p>
+                
+                <h3>Key Features</h3>
+                <ul>
+                    <li>Secure student login and personalized dashboard</li>
+                    <li>Expense tracking with categories (rent, food, transport, school fees, etc.)</li>
+                    <li>Income tracking (allowance, NASFAF, bursaries, part-time jobs)</li>
+                    <li>Savings tracking and goal setting</li>
+                    <li>Budget planning tools to compare planned vs. actual spending</li>
+                    <li>Alerts and reminders for upcoming payments</li>
+                    <li>Visual analytics with charts and graphs</li>
+                    <li>Mobile-responsive design</li>
+                </ul>
+                
+                <h3>Development Team</h3>
+                <div class="team-members">
+                    <div class="team-member">
+                        <div class="member-avatar">GS</div>
+                        <div class="member-name">Gerson Shawapala</div>
+                        <div class="member-id">223066079</div>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-avatar">LS</div>
+                        <div class="member-name">Lahja Sackeus</div>
+                        <div class="member-id">223067369</div>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-avatar">JN</div>
+                        <div class="member-name">Jennef Nghipunya</div>
+                        <div class="member-id">223076228</div>
+                    </div>
+                </div>
+                
+                <h3>Technologies Used</h3>
+                <p>This application is built using modern web technologies including HTML, CSS, JavaScript, Node.js, and MySQL database.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact-section">
+        <div class="container">
+            <div class="contact-content">
+                <h2>Contact Us</h2>
+                <p>Have questions or feedback about the Budget Tracker? We'd love to hear from you!</p>
+                
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <h4>Email</h4>
+                            <p>info@budgettracker.nust.na</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div>
+                            <h4>Phone</h4>
+                            <p>+264 61 207 2111</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <h4>Address</h4>
+                            <p>NUST, 13 Storch Street, Windhoek, Namibia</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <h3>Send us a Message</h3>
+                    <form id="contactForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name">Your Name</label>
+                                <input type="text" id="name" class="form-control" placeholder="Enter your name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Your Email</label>
+                                <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" class="form-control" placeholder="Enter subject" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" class="form-control" placeholder="Enter your message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Privacy Policy Section -->
+    <section class="privacy-section" id="privacy-section">
+        <div class="container">
+            <div class="privacy-content">
+                <h2>Privacy Policy</h2>
+                <p>Last updated: October 2025</p>
+                
+                <h3>1. Information We Collect</h3>
+                <p>We collect information that you provide directly to us when using the Budget Tracker system:</p>
+                <ul>
+                    <li><strong>Personal Information:</strong> Name, student ID, email address, phone number</li>
+                    <li><strong>Financial Information:</strong> Income sources, expenses, savings goals, transaction history</li>
+                    <li><strong>Account Information:</strong> Username, password, account preferences</li>
+                    <li><strong>Technical Information:</strong> IP address, browser type, device information, usage data</li>
+                </ul>
+                
+                <h3>2. How We Use Your Information</h3>
+                <p>We use the collected information for the following purposes:</p>
+                <ul>
+                    <li>To provide and maintain the Budget Tracker service</li>
+                    <li>To personalize your financial management experience</li>
+                    <li>To send you important notifications and reminders</li>
+                    <li>To improve our services and develop new features</li>
+                    <li>To ensure the security and integrity of our platform</li>
+                    <li>To comply with legal obligations</li>
+                </ul>
+                
+                <h3>3. Data Security</h3>
+                <p>We implement appropriate technical and organizational security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. These measures include:</p>
+                <ul>
+                    <li>Encryption of sensitive data in transit and at rest</li>
+                    <li>Regular security assessments and updates</li>
+                    <li>Access controls and authentication mechanisms</li>
+                    <li>Secure data backup procedures</li>
+                </ul>
+                
+                <h3>4. Data Retention</h3>
+                <p>We retain your personal information only for as long as necessary to fulfill the purposes outlined in this Privacy Policy, unless a longer retention period is required or permitted by law. When your account is deleted, we will securely erase your personal data from our systems.</p>
+                
+                <h3>5. Your Rights</h3>
+                <p>You have the following rights regarding your personal information:</p>
+                <ul>
+                    <li><strong>Access:</strong> You can request a copy of your personal data</li>
+                    <li><strong>Correction:</strong> You can update or correct inaccurate information</li>
+                    <li><strong>Deletion:</strong> You can request deletion of your personal data</li>
+                    <li><strong>Objection:</strong> You can object to certain processing activities</li>
+                    <li><strong>Portability:</strong> You can request transfer of your data to another service</li>
+                </ul>
+                
+                <h3>6. Third-Party Services</h3>
+                <p>We do not sell, trade, or otherwise transfer your personal information to third parties without your consent, except as described in this policy or as required by law. We may share anonymized, aggregated data for analytical purposes.</p>
+                
+                <h3>7. Cookies and Tracking</h3>
+                <p>We use cookies and similar tracking technologies to enhance your experience on our platform. You can control cookie preferences through your browser settings.</p>
+                
+                <h3>8. Changes to This Policy</h3>
+                <p>We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last updated" date.</p>
+                
+                <h3>9. Contact Us</h3>
+                <p>If you have any questions about this Privacy Policy or our data practices, please contact us at:</p>
+                <p>Email: privacy@budgettracker.nust.na<br>
+                Phone: +264 61 207 2111<br>
+                Address: NUST, 13 Storch Street, Windhoek, Namibia</p>
+                
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button class="btn btn-primary" id="backToHome">Back to Home</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add Transaction Button -->
+    <button class="add-transaction" id="addTransactionBtn">
+        <i class="fas fa-plus"></i>
+    </button>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Budget Tracker</h3>
+                    <p>A smart academic and financial planning tool for NUST students to manage expenses, track income, and achieve savings goals.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="#" class="nav-link" data-page="home">Home</a>
+                    <a href="#" class="nav-link" data-page="about">About</a>
+                    <a href="#" class="nav-link" data-page="contact">Contact</a>
+                    <a href="#" id="privacyPolicyFooterLink">Privacy Policy</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-envelope"></i> info@budgettracker.nust.na</p>
+                    <p><i class="fas fa-phone"></i> +264 61 207 2111</p>
+                    <p><i class="fas fa-map-marker-alt"></i> NUST, 13 Storch Street, Windhoek</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Budget Tracker System. Developed by Gerson Shawapala, Lahja Sackeus, Jennef Nghipunya.</p>
+            </div>
+        </div>
+    </footer>
+        <script src="script.js"></script>
+</body>
+</html>
